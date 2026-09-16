@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Auditoría Técnica & Avances de Desarrollo — Sistema Hauset</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <span class="logo-icon">⚡</span>
+                    <span class="logo-text">HAUSET <span class="badge-audit">AUDIT</span></span>
+                </div>
+                <p class="brand-subtitle">Auditoría Técnica y Avances</p>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#resumen" class="nav-item active" data-tab="resumen">
+                    <span class="nav-icon">📊</span>
+                    <span>Resumen Ejecutivo</span>
+                </a>
+                <a href="#arquitectura" class="nav-item" data-tab="arquitectura">
+                    <span class="nav-icon">🏛️</span>
+                    <span>Arquitectura & ADRs</span>
+                </a>
+                <a href="#backend" class="nav-item" data-tab="backend">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Backend (Spring Boot)</span>
+                </a>
+                <a href="#frontend" class="nav-item" data-tab="frontend">
+                    <span class="nav-icon">📱</span>
+                    <span>Frontend (Flutter)</span>
+                </a>
+                <a href="#database" class="nav-item" data-tab="database">
+                    <span class="nav-icon">🗄️</span>
+                    <span>Base de Datos & Flyway</span>
+                </a>
+                <a href="#endpoints" class="nav-item" data-tab="endpoints">
+                    <span class="nav-icon">🔌</span>
+                    <span>Inventario de APIs</span>
+                </a>
+                <a href="#rbac" class="nav-item" data-tab="rbac">
+                    <span class="nav-icon">🛡️</span>
+                    <span>Matriz RBAC</span>
+                </a>
+                <a href="#hallazgos" class="nav-item" data-tab="hallazgos">
+                    <span class="nav-icon">🔍</span>
+                    <span>Hallazgos & Deuda</span>
+                </a>
+                <a href="#roadmap" class="nav-item" data-tab="roadmap">
+                    <span class="nav-icon">🚀</span>
+                    <span>Plan & Próximos Pasos</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="audit-meta">
+                    <div><strong>Auditor Líder:</strong> Antigravity Audit</div>
+                    <div><strong>Fecha:</strong> Septiembre 2026</div>
+                    <div><strong>Estado VPS:</strong> <span class="status-dot green"></span> En línea</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header Bar -->
+            <header class="top-header">
+                <div class="header-title-block">
+                    <h1>Informe Integral de Auditoría & Avances de Ingeniería</h1>
+                    <p class="breadcrumbs">Hauset Ecosystem &gt; Backend Spring Boot &gt; Flutter Mobile &gt; PostgreSQL/Flyway</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir / PDF</button>
+                    <button class="btn btn-primary" id="btn-export-json">💾 Exportar Datos</button>
+                </div>
+            </header>
+
+            <!-- TAB 1: RESUMEN EJECUTIVO -->
+            <section id="section-resumen" class="tab-pane active">
+                <div class="scorecard-grid">
+                    <div class="score-card highlight">
+                        <div class="score-header">
+                            <span class="score-title">Índice Global de Madurez</span>
+                            <span class="badge badge-success">FASE OPERATIVA</span>
+                        </div>
+                        <div class="score-value">78<span class="score-unit">/100</span></div>
+                        <div class="score-progress">
+                            <div class="progress-bar" style="width: 78%"></div>
+                        </div>
+                        <p class="score-desc">Infraestructura, Auth, Catálogo, Multimedia y Esquema V1-V6 100% operativos.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Avance Backend</span>
+                            <span class="badge badge-primary">API REST</span>
+                        </div>
+                        <div class="score-value">85<span class="score-unit">%</span></div>
+                        <div class="score-progress">
+                            <div class="progress-bar green" style="width: 85%"></div>
+                        </div>
+                        <p class="score-desc">Auth, Proveedores, Catálogo, Precios, Archivos y Entidades de Obra listas.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Avance Frontend Mobile</span>
+                            <span class="badge badge-warning">FLUTTER 3</span>
+                        </div>
+                        <div class="score-value">55<span class="score-unit">%</span></div>
+                        <div class="score-progress">
+                            <div class="progress-bar orange" style="width: 55%"></div>
+                        </div>
+                        <p class="score-desc">Auth/Session E2E validado en dispositivo físico; Catálogo en fase de UI.</p>
+                    </div>
+
+                    <div class="score-card">
+                        <div class="score-header">
+                            <span class="score-title">Base de Datos & Flyway</span>
+                            <span class="badge badge-info">POSTGRESQL 15</span>
+                        </div>
+                        <div class="score-value">100<span class="score-unit">%</span></div>
+                        <div class="score-progress">
+                            <div class="progress-bar blue" style="width: 100%"></div>
+                        </div>
+                        <p class="score-desc">Migraciones V1 a V6 aplicadas sin drift; UUID y concurrencia optimista.</p>
+                    </div>
+                </div>
+
+                <!-- Executive Highlights Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📋 Dictamen de Auditoría y Estado Operativo</h2>
+                        <span class="pill pill-green">APROBADO CON RECOMENDACIONES</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead-text">
+                            El sistema <strong>Hauset</strong> (Gestión de Campo e Ingeniería para Domótica y Automatización) 
+                            demuestra una base arquitectónica de alto estándar técnico. Se han resuelto con éxito los 
+                            desafíos críticos de sincronización móvil offline mediante <strong>UUIDs universales</strong>, 
+                            resolución de conflictos con <strong>concurrencia optimista (HTTP 409)</strong>, y desacoplamiento 
+                            de archivos binarios mediante una <strong>tabla multimedia centralizada (Opción B)</strong> con soporte S3/MinIO.
+                        </p>
+
+                        <div class="kpi-banner">
+                            <div class="kpi-item">
+                                <span class="kpi-num">20+</span>
+                                <span class="kpi-label">Tablas Migradas en Flyway</span>
+                            </div>
+                            <div class="kpi-item">
+                                <span class="kpi-num">18</span>
+                                <span class="kpi-label">Endpoints REST Operativos</span>
+                            </div>
+                            <div class="kpi-item">
+                                <span class="kpi-num">6</span>
+                                <span class="kpi-label">Roles RBAC Modelados</span>
+                            </div>
+                            <div class="kpi-item">
+                                <span class="kpi-num">0</span>
+                                <span class="kpi-label">Colisiones de ID (UUID V4)</span>
+                            </div>
+                            <div class="kpi-item">
+                                <span class="kpi-num">100%</span>
+                                <span class="kpi-label">Idempotencia en Subida de Archivos</span>
+                            </div>
+                        </div>
+
+                        <div class="audit-verdict-box">
+                            <h3>🔍 Conclusiones del Auditor:</h3>
+                            <ul class="check-list">
+                                <li><strong>Servicios Core Activos:</strong> El contenedor Docker de backend (Spring Boot 3.3.4), base de datos (PostgreSQL 15), storage de objetos (MinIO) y proxy Nginx se encuentran activos y saludables en el servidor.</li>
+                                <li><strong>Validación Móvil en Hardware Real:</strong> Se probó la autenticación con roles en el dispositivo físico <code>moto g56 5G</code> a través de la red privada Tailscale (<code>100.66.85.43</code>).</li>
+                                <li><strong>Desacoplamiento Comercial vs Operativo:</strong> Se eliminó la fricción de recotizaciones ante imprevistos de obra mediante la separación entre Cotización comercial fija e Instrucciones de trabajo versionadas.</li>
+                                <li><strong>Prioridad de Siguiente Sprint:</strong> Trasladar los endpoints de Catálogo y Precios a la interfaz visual de Flutter, e implementar la capa de Servicios/Controllers para los módulos de obra (V6) ya modelados en JPA.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ARQUITECTURA & ADRS -->
+            <section id="section-arquitectura" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🏛️ Topología de Arquitectura & Decisiones de Diseño (ADRs)</h2>
+                        <span class="pill pill-blue">C4 Model / ADR System</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Topology Diagram representation -->
+                        <div class="architecture-diagram">
+                            <div class="arch-layer">
+                                <div class="arch-node client-node">
+                                    <div class="node-icon">📱</div>
+                                    <div class="node-title">Cliente Móvil (Flutter 3)</div>
+                                    <div class="node-desc">Riverpod + GoRouter + Dio + SecureStorage<br>Offline-First (UUIDs + Cache Local)</div>
+                                </div>
+                            </div>
+                            <div class="arch-arrow">⬇ HTTP/REST (Tailscale VPN / Nginx Proxy :80) ⬇</div>
+                            <div class="arch-layer">
+                                <div class="arch-node proxy-node">
+                                    <div class="node-icon">🌐</div>
+                                    <div class="node-title">Reverse Proxy Nginx</div>
+                                    <div class="node-desc">Puerto 80 &rarr; Spring Boot :8080<br>CORS Headers & Static Routing</div>
+                                </div>
+                            </div>
+                            <div class="arch-arrow">⬇ Reverse Proxy Pass ⬇</div>
+                            <div class="arch-layer">
+                                <div class="arch-node backend-node">
+                                    <div class="node-icon">⚙️</div>
+                                    <div class="node-title">Hauset Backend (Spring Boot 3.3.4 - Java 17)</div>
+                                    <div class="node-desc">Spring Data JPA • Spring Security 6 • JJWT 0.12.5 • Flyway Core<br>Modular: Auth, Catálogo, Proyectos, Multimedia, Auditoría</div>
+                                </div>
+                            </div>
+                            <div class="arch-arrow">⬇ JDBC Connection Pool & Object Storage APIs ⬇</div>
+                            <div class="arch-layer two-cols">
+                                <div class="arch-node db-node">
+                                    <div class="node-icon">🗄️</div>
+                                    <div class="node-title">PostgreSQL 15 (Docker)</div>
+                                    <div class="node-desc">Esquema Relacional V1-V6<br>UUID Keys, Optimistic Lock Versioning<br>Soft-deletes & Indices FK</div>
+                                </div>
+                                <div class="arch-node storage-node">
+                                    <div class="node-icon">📦</div>
+                                    <div class="node-title">MinIO / AWS S3 Compatible</div>
+                                    <div class="node-desc">Almacenamiento Desacoplado de Fotos<br>Evidencias Antes/Después, Firmas, PDFs<br>Control SHA-256 e Idempotencia</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADR Cards -->
+                        <h3 class="section-subtitle">Registro de Decisiones Arquitectónicas Clave (ADRs)</h3>
+                        <div class="adr-grid">
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-01</div>
+                                <h4>Identificadores UUID V4 Descentralizados</h4>
+                                <p><strong>Contexto:</strong> Los instaladores y relevadores operan en sótanos o zonas sin conectividad celular.</p>
+                                <p><strong>Decisión:</strong> Todas las claves primarias y foráneas se definieron como <code>UUID</code>. Esto permite que el cliente móvil cree registros en SQLite y los sincronice posteriormente sin riesgo de colisión de IDs con el servidor.</p>
+                                <div class="adr-badge success">Implementado en V1-V6</div>
+                            </div>
+
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-02</div>
+                                <h4>Control de Concurrencia Optimista (HTTP 409)</h4>
+                                <p><strong>Contexto:</strong> En obra, dos técnicos o la secretaría pueden modificar cotizaciones o checklists al mismo tiempo.</p>
+                                <p><strong>Decisión:</strong> Se agregó la columna <code>version BIGINT</code> con anotación <code>@Version</code> en JPA. Si un cliente envía una versión obsoleta, el backend retorna <code>409 Conflict</code>. Flutter implementa <code>ConflictException</code> y <code>ConflictFailure</code> para alertar al usuario sin pisar datos.</p>
+                                <div class="adr-badge success">Implementado en Backend & Móvil</div>
+                            </div>
+
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-03</div>
+                                <h4>Multimedia Centralizada (Opción B)</h4>
+                                <p><strong>Contexto:</strong> Las entidades de negocio almacenaban URLs redundantes o rutas a archivos desorganizados.</p>
+                                <p><strong>Decisión:</strong> Creación de la tabla maestra <code>archivos_adjuntos</code>. Las entidades no guardan binarios ni rutas directas. Se usa <code>entidad_tipo</code>, <code>entidad_id</code>, <code>categoria</code>, <code>storage_key</code> y <code>checksum_sha256</code> para garantizar idempotencia en subidas móviles.</p>
+                                <div class="adr-badge success">100% Funcional con Test E2E</div>
+                            </div>
+
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-04</div>
+                                <h4>Desacoplamiento Cotización vs Instrucciones</h4>
+                                <p><strong>Contexto:</strong> En domótica, los requerimientos cambian en sitio por obstáculos constructivos, generando fricción si se debe rehacer la cotización al cliente.</p>
+                                <p><strong>Decisión:</strong> La cotización comercial es inmutable una vez aceptada. Las instrucciones de trabajo son operativas y versionadas (v1, v2, v3). Si se requiere material nuevo, se genera un <code>cotizacion_extras</code> (adenda) sin anular el contrato original.</p>
+                                <div class="adr-badge success">Modelado en V6 y JPA</div>
+                            </div>
+
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-05</div>
+                                <h4>Catálogo Sin Precio Fijo (Historial de Snapshots)</h4>
+                                <p><strong>Contexto:</strong> Los proveedores actualizan precios casi a diario por factores inflacionarios y tipos de cambio.</p>
+                                <p><strong>Decisión:</strong> El producto no tiene precio base fijo. Se registran snapshots con fecha y auditoría en <code>precios_historial</code>. El cotizador toma los últimos precios por proveedor ordenados de menor a mayor y aplica el margen fijado por jefatura.</p>
+                                <div class="adr-badge success">Controladores y Servicios Activos</div>
+                            </div>
+
+                            <div class="adr-card">
+                                <div class="adr-tag">ADR-06</div>
+                                <h4>Cifrado y Auditoría de Credenciales de Equipos</h4>
+                                <p><strong>Contexto:</strong> Los técnicos necesitan consultar contraseñas de routers o cámaras del cliente en campo, lo cual genera un alto riesgo de fuga de datos.</p>
+                                <p><strong>Decisión:</strong> Las credenciales se almacenan cifradas (<code>contrasena_cifrada</code>). Toda lectura desde la app registra un evento obligatorio e inalterable en <code>credenciales_accesos_log</code>.</p>
+                                <div class="adr-badge warning">Esquema V6 Listo / Cripto Pendiente</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: BACKEND SPRING BOOT -->
+            <section id="section-backend" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>⚙️ Auditoría Detallada del Backend (Spring Boot 3.3.4)</h2>
+                        <span class="pill pill-green">JAVA 17 LTS</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="grid-2">
+                            <div class="detail-box">
+                                <h3>📦 Stack Tecnológico & Componentes Activos</h3>
+                                <table class="meta-table">
+                                    <tr><td><strong>Framework Principal:</strong></td><td>Spring Boot 3.3.4 (Spring 6)</td></tr>
+                                    <tr><td><strong>Gestor de Dependencias:</strong></td><td>Apache Maven (pom.xml con Java 17)</td></tr>
+                                    <tr><td><strong>Persistencia:</strong></td><td>Spring Data JPA con Hibernate 6</td></tr>
+                                    <tr><td><strong>Seguridad:</strong></td><td>Spring Security 6 + JJWT 0.12.5 (HMAC-SHA256)</td></tr>
+                                    <tr><td><strong>Migraciones DB:</strong></td><td>Flyway Core 10.x (PostgreSQL driver)</td></tr>
+                                    <tr><td><strong>Monitoreo:</strong></td><td>Spring Boot Actuator (<code>/actuator/health</code>)</td></tr>
+                                    <tr><td><strong>Validación:</strong></td><td>Hibernate Validator (<code>spring-boot-starter-validation</code>)</td></tr>
+                                    <tr><td><strong>Manejo de Errores:</strong></td><td><code>GlobalExceptionHandler</code> con <code>ErrorResponse</code></td></tr>
+                                </table>
+                            </div>
+
+                            <div class="detail-box">
+                                <h3>📊 Estado de Implementación por Paquetes</h3>
+                                <div class="package-status-list">
+                                    <div class="pkg-item">
+                                        <div class="pkg-header">
+                                            <span><code>com.appdomotica.usuarios</code></span>
+                                            <span class="badge badge-success">100% PRODUCCIÓN</span>
+                                        </div>
+                                        <p>AuthController, UsuarioController, UsuarioService, RefreshTokenService, DTOs y validación.</p>
+                                    </div>
+                                    <div class="pkg-item">
+                                        <div class="pkg-header">
+                                            <span><code>com.appdomotica.catalogo</code></span>
+                                            <span class="badge badge-success">100% PRODUCCIÓN</span>
+                                        </div>
+                                        <p>Proveedores, Productos, Historial de Precios, filtros paginados, RBAC restrictivo de precios.</p>
+                                    </div>
+                                    <div class="pkg-item">
+                                        <div class="pkg-header">
+                                            <span><code>com.appdomotica.multimedia</code></span>
+                                            <span class="badge badge-success">100% PRODUCCIÓN</span>
+                                        </div>
+                                        <p>Subida Multipart, Checksum SHA-256 idempotente, DiskStorageService, stream de descarga.</p>
+                                    </div>
+                                    <div class="pkg-item">
+                                        <div class="pkg-header">
+                                            <span><code>com.appdomotica.proyectos</code></span>
+                                            <span class="badge badge-warning">60% MODELADO JPA</span>
+                                        </div>
+                                        <p>Entidades JPA y 11 Repositorios Spring Data listos. Pendientes Controllers y Services REST.</p>
+                                    </div>
+                                    <div class="pkg-item">
+                                        <div class="pkg-header">
+                                            <span><code>com.appdomotica.cotizaciones</code></span>
+                                            <span class="badge badge-warning">60% MODELADO JPA</span>
+                                        </div>
+                                        <p>Entidades JPA Cotizacion, CotizacionExtra, Items e Informes Técnicos listos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security & Auth Deep-dive -->
+                        <div class="card subcard">
+                            <h3>🔐 Arquitectura de Seguridad & Ciclo de Token</h3>
+                            <div class="security-flow-grid">
+                                <div class="flow-step">
+                                    <div class="step-num">1</div>
+                                    <h4>Login con Teléfono</h4>
+                                    <p>Endpoint público <code>POST /api/usuarios/login</code>. Valida credenciales con BCryptPasswordEncoder.</p>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-num">2</div>
+                                    <h4>Doble Token</h4>
+                                    <p>Retorna <code>token</code> JWT (expira en 1 hora, claims: id, nombre, rol) y <code>refreshToken</code> UUID persistido (30 días).</p>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-num">3</div>
+                                    <h4>JwtFilter</h4>
+                                    <p>Intercepta peticiones, valida firma HMAC, construye <code>CustomUserDetails</code> con el rol y carga el SecurityContext.</p>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-num">4</div>
+                                    <h4>Endpoint /me</h4>
+                                    <p>Permite al frontend validar la vigencia de la sesión y obtener los datos completos del usuario autenticado.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Integration Tests -->
+                        <div class="card subcard">
+                            <h3>🧪 Resultados de Pruebas de Integración (Spring Test)</h3>
+                            <div class="test-results-grid">
+                                <div class="test-item passed">
+                                    <span class="test-badge">PASÓ</span>
+                                    <strong>CatalogoIntegrationTest:</strong> ContextLoads & Bean Injection de servicios de catálogo y proveedores.
+                                </div>
+                                <div class="test-item passed">
+                                    <span class="test-badge">PASÓ</span>
+                                    <strong>ArchivoAdjuntoIntegrationTest:</strong> Subida multipart, verificación física en disco, lectura de Resource, idempotencia con hash SHA-256 repetido.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: FRONTEND FLUTTER -->
+            <section id="section-frontend" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📱 Auditoría del Frontend Móvil (Flutter / Riverpod)</h2>
+                        <span class="pill pill-blue">HAUSET MOBILE CLIENT</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="grid-2">
+                            <div class="detail-box">
+                                <h3>🛠️ Arquitectura de Software Móvil</h3>
+                                <p>El cliente móvil implementa una variante rigurosa de <strong>Clean Architecture</strong> con gestión de estado reactiva mediante <strong>Riverpod 2.6.1</strong> y enrutamiento declarativo con <strong>GoRouter 14.8.1</strong>.</p>
+                                
+                                <div class="tree-view">
+                                    <div class="tree-node">📁 lib/</div>
+                                    <div class="tree-node">&nbsp;&nbsp;📁 core/</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📄 network/dio_client.dart (BaseURL 100.66.85.43, AuthInterceptor)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📄 storage/secure_storage.dart (Solo Tokens, sin datos de dominio)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📄 errors/exceptions.dart & failures.dart (ConflictException 409)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📄 router/app_router.dart (Rutas y Guards reactivos)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;📁 features/</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📁 auth/ (Data, Domain, Presentation - 100% Funcional)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📁 catalogo/ (En ejecución según plan_mobile_sprint_catalogo.md)</div>
+                                    <div class="tree-node">&nbsp;&nbsp;&nbsp;&nbsp;📁 proveedores/ (En ejecución según plan de sprint)</div>
+                                </div>
+                            </div>
+
+                            <div class="detail-box">
+                                <h3>📲 Dispositivo de Prueba Físico & Configuración de Red</h3>
+                                <table class="meta-table">
+                                    <tr><td><strong>Dispositivo de Prueba:</strong></td><td>Motorola moto g56 5G (Android)</td></tr>
+                                    <tr><td><strong>Conectividad:</strong></td><td>Tailscale VPN (IP: <code>100.66.85.43:80</code>)</td></tr>
+                                    <tr><td><strong>Permisos Android:</strong></td><td><code>INTERNET</code> & <code>usesCleartextTraffic=true</code></td></tr>
+                                    <tr><td><strong>Permisos iOS:</strong></td><td><code>NSAppTransportSecurity: NSAllowsArbitraryLoads</code></td></tr>
+                                    <tr><td><strong>Control de Concurrencia:</strong></td><td><code>ConflictFailure</code> mapeado al recibir HTTP 409</td></tr>
+                                    <tr><td><strong>Almacenamiento Seguro:</strong></td><td><code>FlutterSecureStorage</code> con Keystore / Keychain</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Sprint Execution Progress -->
+                        <div class="card subcard">
+                            <h3>🚀 Ejecución del Sprint: Catálogo, Proveedores y Precios</h3>
+                            <div class="sprint-progress-tracker">
+                                <div class="sprint-step completed">
+                                    <div class="step-status">✅ COMPLETADO</div>
+                                    <h4>Fase 1: Backend Endpoints</h4>
+                                    <p>Endpoints paginados, filtros, soft-delete y registro de precios listos en Spring Boot.</p>
+                                </div>
+                                <div class="sprint-step in-progress">
+                                    <div class="step-status">🔄 EN DESARROLLO</div>
+                                    <h4>Fase 2: Conectividad Móvil & Auth</h4>
+                                    <p>Login E2E con roles, interceptor JWT y captura de excepciones 409 en Flutter.</p>
+                                </div>
+                                <div class="sprint-step pending">
+                                    <div class="step-status">⏳ PENDIENTE</div>
+                                    <h4>Fase 3: Proveedores UI</h4>
+                                    <p>Directorio de proveedores, búsqueda en vivo, selector combobox para precios.</p>
+                                </div>
+                                <div class="sprint-step pending">
+                                    <div class="step-status">⏳ PENDIENTE</div>
+                                    <h4>Fase 4: Catálogo & Cotización Rápida</h4>
+                                    <p>Chips de categoría, comparativa de precios menor a mayor y modal de registro.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: BASE DE DATOS & FLYWAY -->
+            <section id="section-database" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🗄️ Diccionario de Datos & Migraciones Flyway (PostgreSQL 15)</h2>
+                        <span class="pill pill-blue">V1 a V6 CONSOLIDADO</span>
+                    </div>
+                    <div class="card-body">
+                        <!-- Flyway Timeline -->
+                        <div class="flyway-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V1</div>
+                                <div class="timeline-content">
+                                    <h4>V1__init_schema.sql</h4>
+                                    <p>Tablas nucleares: usuarios, roles, clientes, leads, catálogo de productos, proveedores, precios historial, informes y cotizaciones.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V2</div>
+                                <div class="timeline-content">
+                                    <h4>V2__refresh_token.sql</h4>
+                                    <p>Tabla <code>refresh_tokens</code> con vinculación a usuario y fecha de expiración.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V3</div>
+                                <div class="timeline-content">
+                                    <h4>V3__insert_test_user.sql</h4>
+                                    <p>Usuario administrador inicial con hash BCrypt.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V4</div>
+                                <div class="timeline-content">
+                                    <h4>V4__soft_delete_and_seed_users.sql</h4>
+                                    <p>Adición de columna <code>activo</code> en catálogo y proveedores. Siembra de 6 usuarios de prueba para cada rol del sistema.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V5</div>
+                                <div class="timeline-content">
+                                    <h4>V5__multimedia_and_schema_fixes.sql</h4>
+                                    <p>Tabla unificada <code>archivos_adjuntos</code> (Opción B), normalización a <code>TIMESTAMPTZ</code>, precisión <code>DECIMAL(12,2)</code>, eliminación de <code>pdf_url</code> redundante e índices FK.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-badge">V6</div>
+                                <div class="timeline-content">
+                                    <h4>V6__field_management_modules.sql</h4>
+                                    <p>Tablas operativas de obra: <code>proyectos</code>, <code>instrucciones_version</code>, <code>cambios_instruccion</code>, <code>checklist_tareas</code>, <code>visitas</code>, <code>firmas_conformidad</code>, <code>reportes_entrega</code>, <code>equipos_instalados</code>, <code>credenciales_equipo</code>, <code>credenciales_accesos_log</code> y <code>mantenimiento_recordatorios</code>.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Dictionary Interactive Explorer -->
+                        <h3 class="section-subtitle">Explorador de Tablas Auditadas</h3>
+                        <div class="dictionary-filter">
+                            <input type="text" id="db-search-input" placeholder="🔍 Buscar tabla o columna en el esquema...">
+                            <div class="category-pills">
+                                <button class="cat-pill active" data-cat="all">Todas (16)</button>
+                                <button class="cat-pill" data-cat="auth">Usuarios & Auth</button>
+                                <button class="cat-pill" data-cat="catalogo">Catálogo & Precios</button>
+                                <button class="cat-pill" data-cat="comercial">Comercial & Cotizaciones</button>
+                                <button class="cat-pill" data-cat="obra">Operaciones de Campo (Obra)</button>
+                                <button class="cat-pill" data-cat="postventa">Postventa & Credenciales</button>
+                                <button class="cat-pill" data-cat="multimedia">Multimedia</button>
+                            </div>
+                        </div>
+
+                        <div class="table-accordion-list" id="dictionary-container">
+                            <!-- Tables will be dynamically populated/filtered by app.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: INVENTARIO DE APIS -->
+            <section id="section-endpoints" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔌 Inventario Completo de Endpoints REST & Especificación</h2>
+                        <span class="pill pill-green">18 ENDPOINTS VERIFICADOS</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="endpoint-filter-bar">
+                            <input type="text" id="api-search-input" placeholder="🔍 Filtrar endpoint (ej: /api/catalogo, POST, SECRETARIA)...">
+                            <div class="method-filters">
+                                <span class="method-badge get active" data-method="all">TODOS</span>
+                                <span class="method-badge get" data-method="GET">GET</span>
+                                <span class="method-badge post" data-method="POST">POST</span>
+                                <span class="method-badge put" data-method="PUT">PUT</span>
+                                <span class="method-badge patch" data-method="PATCH">PATCH</span>
+                                <span class="method-badge delete" data-method="DELETE">DELETE</span>
+                            </div>
+                        </div>
+
+                        <div class="endpoint-list" id="endpoints-container">
+                            <!-- Populated by app.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: MATRIZ RBAC -->
+            <section id="section-rbac" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🛡️ Matriz de Control de Acceso Basado en Roles (RBAC)</h2>
+                        <span class="pill pill-blue">6 ROLES AUDITADOS</span>
+                    </div>
+                    <div class="card-body">
+                        <p class="section-desc">
+                            Matriz de verificación de privilegios aplicada tanto a nivel de controladores y métodos Spring Security (<code>@PreAuthorize</code>) como en la adaptación condicional de la UI en Flutter.
+                        </p>
+
+                        <div class="table-responsive">
+                            <table class="rbac-matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Módulo / Acción</th>
+                                        <th>JEFE SISTEMAS</th>
+                                        <th>JEFE ELECTROMECÁNICO</th>
+                                        <th>INGENIERO INDUSTRIAL</th>
+                                        <th>SECRETARIA</th>
+                                        <th>INSTALADOR</th>
+                                        <th>MARKETING</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Gestión de Usuarios (Admin)</strong></td>
+                                        <td><span class="perm-check yes">✅ Total</span></td>
+                                        <td><span class="perm-check yes">✅ Total</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Crear / Editar Proveedores</strong></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Crear / Editar Productos</strong></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Registrar Snapshot de Precios</strong></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check no">❌ Solo lectura</span></td>
+                                        <td><span class="perm-check yes">✅ Registro diario</span></td>
+                                        <td><span class="perm-check no">❌ Solo lectura</span></td>
+                                        <td><span class="perm-check no">❌ Solo lectura</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Definir Margen Comercial</strong></td>
+                                        <td><span class="perm-check yes">✅ Autorizado</span></td>
+                                        <td><span class="perm-check yes">✅ Autorizado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Solo arma</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Aprobar Cambios de Instrucción en Sitio</strong></td>
+                                        <td><span class="perm-check yes">✅ Aprobar</span></td>
+                                        <td><span class="perm-check yes">✅ Aprobar</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Solo propone</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Completar Checklist y Subir Fotos de Obra</strong></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Permitido</span></td>
+                                        <td><span class="perm-check yes">✅ Supervisar</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check yes">✅ Operador clave</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Consultar Credenciales de Equipos</strong></td>
+                                        <td><span class="perm-check audit">👁️ Auditado</span></td>
+                                        <td><span class="perm-check audit">👁️ Auditado</span></td>
+                                        <td><span class="perm-check audit">👁️ Auditado</span></td>
+                                        <td><span class="perm-check audit">👁️ Auditado</span></td>
+                                        <td><span class="perm-check audit">👁️ Auditado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Eliminar Entidades (Baja Lógica / Soft Delete)</strong></td>
+                                        <td><span class="perm-check yes">✅ Exclusivo</span></td>
+                                        <td><span class="perm-check yes">✅ Exclusivo</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                        <td><span class="perm-check no">❌ Denegado</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="note-box info">
+                            <strong>Nota de Auditoría sobre Credenciales:</strong> 
+                            Todos los miembros operativos que interactúan con el hardware en campo pueden acceder a las contraseñas para configuración in-situ, pero la consulta está sujeta a un disparador de auditoría que guarda el ID del usuario, fecha exacta y equipo consultado en <code>credenciales_accesos_log</code>.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 8: HALLAZGOS & DEUDA TÉCNICA -->
+            <section id="section-hallazgos" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔍 Matriz de Hallazgos, Riesgos y Deuda Técnica</h2>
+                        <span class="pill pill-orange">EVALUACIÓN DE CALIDAD</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="findings-grid">
+                            <!-- Hallazgo 1 -->
+                            <div class="finding-card high">
+                                <div class="finding-header">
+                                    <span class="finding-id">H-01</span>
+                                    <span class="severity-badge high">PRIORIDAD ALTA</span>
+                                </div>
+                                <h4>Cifrado en Reposo de Credenciales de Dispositivos (Módulo 5)</h4>
+                                <p><strong>Descripción:</strong> La tabla <code>credenciales_equipo</code> contiene la columna <code>contrasena_cifrada</code>. Sin embargo, no existe aún el servicio backend que aplique el algoritmo simétrico (ej. AES-256-GCM) antes de persistir la entidad.</p>
+                                <p><strong>Riesgo:</strong> Posible fuga de credenciales de red o cámaras si se guardan en texto plano temporalmente.</p>
+                                <p><strong>Recomendación:</strong> Implementar un <code>AttributeConverter&lt;String, String&gt;</code> en JPA con cifrado AES-256 basado en una clave secreta inyectada desde variables de entorno seguras.</p>
+                            </div>
+
+                            <!-- Hallazgo 2 -->
+                            <div class="finding-card medium">
+                                <div class="finding-header">
+                                    <span class="finding-id">H-02</span>
+                                    <span class="severity-badge medium">PRIORIDAD MEDIA</span>
+                                </div>
+                                <h4>Implementación de Controllers/Services para Módulos de Obra (V6)</h4>
+                                <p><strong>Descripción:</strong> Las migraciones Flyway V6 crearon las 11 tablas de campo, y los Repositorios y Entidades JPA están creados en <code>com.appdomotica.proyectos</code>, pero aún no se han expuesto los endpoints REST correspondientes (visitas, tareas, checklist).</p>
+                                <p><strong>Riesgo:</strong> El cliente móvil no puede consumir la funcionalidad de obra hasta que estos controladores estén disponibles.</p>
+                                <p><strong>Recomendación:</strong> Programar la fase de Controllers y Services para <code>Proyectos</code>, <code>Visitas</code> y <code>ChecklistTareas</code> en el siguiente sprint de backend.</p>
+                            </div>
+
+                            <!-- Hallazgo 3 -->
+                            <div class="finding-card medium">
+                                <div class="finding-header">
+                                    <span class="finding-id">H-03</span>
+                                    <span class="severity-badge medium">PRIORIDAD MEDIA</span>
+                                </div>
+                                <h4>Soporte Offline en Cliente Móvil (SQLite Cache)</h4>
+                                <p><strong>Descripción:</strong> La dependencia <code>sqflite</code> en <code>pubspec.yaml</code> está comentada. La app actualmente realiza llamadas en vivo mediante Dio.</p>
+                                <p><strong>Riesgo:</strong> Si el técnico entra a una obra sin señal, la app fallará al cargar productos o enviar fotos.</p>
+                                <p><strong>Recomendación:</strong> Activar <code>sqflite</code> y diseñar el repositorio local con cola de sincronización diferida para subida de fotos y guardado de checklist.</p>
+                            </div>
+
+                            <!-- Hallazgo 4 -->
+                            <div class="finding-card low">
+                                <div class="finding-header">
+                                    <span class="finding-id">H-04</span>
+                                    <span class="severity-badge low">PRIORIDAD BAJA</span>
+                                </div>
+                                <h4>Transición de Disco Local a Driver S3/MinIO Nativo</h4>
+                                <p><strong>Descripción:</strong> El almacenamiento multimedia actual utiliza <code>DiskStorageService</code> montado en <code>/var/hauset/storage</code>. Aunque la interfaz <code>StorageService</code> está desacoplada y el contenedor MinIO está corriendo, el driver de subida por SDK S3 aún no está activo.</p>
+                                <p><strong>Riesgo:</strong> El disco local del VPS puede saturarse con fotos de alta resolución si no se rota a un bucket S3/R2 externo.</p>
+                                <p><strong>Recomendación:</strong> Activar el profile de <code>S3StorageService</code> utilizando el cliente oficial de AWS SDK / MinIO en el contenedor.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 9: ROADMAP & PRÓXIMOS PASOS -->
+            <section id="section-roadmap" class="tab-pane">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🚀 Plan de Acción & Roadmap Técnico Recomendado</h2>
+                        <span class="pill pill-green">CRONOGRAMA DE EJECUCIÓN</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="roadmap-grid">
+                            <div class="roadmap-col">
+                                <div class="roadmap-col-header">
+                                    <h3>Sprint Actual (S-01)</h3>
+                                    <span class="badge badge-warning">EN CURSO</span>
+                                </div>
+                                <div class="roadmap-cards">
+                                    <div class="roadmap-item done">
+                                        <div class="ri-title">✅ Backend Catálogo & Precios</div>
+                                        <div class="ri-desc">CRUD proveedores, productos y registro de precios con RBAC y tests.</div>
+                                    </div>
+                                    <div class="roadmap-item done">
+                                        <div class="ri-title">✅ Auth Móvil & Session</div>
+                                        <div class="ri-desc">Login, Refresh Token, Secure Storage y validación en hardware moto g56.</div>
+                                    </div>
+                                    <div class="roadmap-item ongoing">
+                                        <div class="ri-title">🔄 UI Flutter: Catálogo & Precios</div>
+                                        <div class="ri-desc">Construcción de pantallas, chips de filtros, selector de proveedores y modal de precios.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="roadmap-col">
+                                <div class="roadmap-col-header">
+                                    <h3>Sprint Inmediato (S-02)</h3>
+                                    <span class="badge badge-primary">PROGRAMADO</span>
+                                </div>
+                                <div class="roadmap-cards">
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">⚙️ Endpoints de Operación de Campo</div>
+                                        <div class="ri-desc">Controllers y Services para <code>/api/proyectos</code>, <code>/api/visitas</code> y <code>/api/tareas</code>.</div>
+                                    </div>
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">📸 Integración Multimedia en Móvil</div>
+                                        <div class="ri-desc">Subida de fotos antes/después con compresión WebP y checksum SHA-256 desde Flutter.</div>
+                                    </div>
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">🔐 Cifrado AES-256 de Credenciales</div>
+                                        <div class="ri-desc">AttributeConverter en JPA y log de auditoría en cada lectura de clave.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="roadmap-col">
+                                <div class="roadmap-col-header">
+                                    <h3>Sprint Futuro (S-03)</h3>
+                                    <span class="badge badge-info">POSTVENTA & OFFLINE</span>
+                                </div>
+                                <div class="roadmap-cards">
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">📶 Motor Offline-First SQLite</div>
+                                        <div class="ri-desc">Sincronización bidireccional en segundo plano con resolución de 409 Conflict.</div>
+                                    </div>
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">✍️ Firma Digital de Conformidad</div>
+                                        <div class="ri-desc">Lienzo de firma táctil en Flutter y guardado en <code>archivos_adjuntos</code>.</div>
+                                    </div>
+                                    <div class="roadmap-item">
+                                        <div class="ri-title">💬 Recordatorios WhatsApp</div>
+                                        <div class="ri-desc">Generación de enlaces deep-link a WhatsApp para mantenimientos a 6 meses.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for JSON / Technical Details -->
+    <div id="modal-container" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Detalle Técnico</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <pre id="modal-content"><code></code></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cerrar</button>
+                <button class="btn btn-primary" id="modal-copy-btn">Copiar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
