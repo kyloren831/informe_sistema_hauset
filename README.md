@@ -10,6 +10,7 @@ Este repositorio aloja el informe formal de auditoría y el panel de control int
 
 El informe ha sido diseñado como una Single Page Application (SPA) moderna en HTML5, CSS3 y JavaScript puro (sin frameworks pesados), optimizada para visualización interactiva y exportación para presentaciones o comités de ingeniería:
 
+* **100% Responsive:** Adaptado fluidamente para teléfonos móviles (320px - 480px), tablets (768px - 1024px) y pantallas de escritorio. Incluye drawer de navegación móvil, tablas con columna fija y scroll táctil, y tarjetas adaptativas.
 * **Visualización Local:** Abrir directamente [`index.html`](index.html) en cualquier navegador web.
 * **Servidor Local Rápido:**
   ```bash

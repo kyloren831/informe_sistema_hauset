@@ -415,6 +415,30 @@ document.addEventListener("DOMContentLoaded", () => {
 function initNavigation() {
     const navLinks = document.querySelectorAll(".nav-item");
     const tabPanes = document.querySelectorAll(".tab-pane");
+    const sidebar = document.getElementById("sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+    const btnMobileMenu = document.getElementById("btn-mobile-menu");
+    const btnCloseSidebar = document.getElementById("btn-close-sidebar");
+
+    function openMobileSidebar() {
+        if (sidebar) sidebar.classList.add("open");
+        if (sidebarOverlay) sidebarOverlay.classList.add("open");
+        document.body.classList.add("no-scroll");
+    }
+
+    function closeMobileSidebar() {
+        if (sidebar) sidebar.classList.remove("open");
+        if (sidebarOverlay) sidebarOverlay.classList.remove("open");
+        document.body.classList.remove("no-scroll");
+    }
+
+    if (btnMobileMenu) btnMobileMenu.addEventListener("click", openMobileSidebar);
+    if (btnCloseSidebar) btnCloseSidebar.addEventListener("click", closeMobileSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener("click", closeMobileSidebar);
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMobileSidebar();
+    });
 
     function switchTab(tabId) {
         navLinks.forEach(link => {
@@ -433,6 +457,7 @@ function initNavigation() {
             }
         });
 
+        closeMobileSidebar();
         window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -478,41 +503,43 @@ function renderDictionary(category, searchTerm) {
     container.innerHTML = filtered.map((table, idx) => `
         <div class="table-acc-item" id="table-acc-${idx}">
             <div class="table-acc-header" onclick="toggleAccordion('table-acc-${idx}')">
-                <div>
+                <div class="table-acc-title-group">
                     <span class="t-name">${table.name}</span>
-                    <span style="font-size: 0.8rem; color: var(--text-muted); margin-left: 10px;">${table.desc}</span>
+                    <span class="t-desc">${table.desc}</span>
                 </div>
                 <div class="t-meta">
                     <span class="t-badge">${table.flyway}</span>
-                    <span class="t-badge">${table.columns.length} columnas</span>
-                    <span style="font-size: 0.8rem;">▼</span>
+                    <span class="t-badge">${table.columns.length} cols</span>
+                    <span class="acc-chevron">▼</span>
                 </div>
             </div>
             <div class="table-acc-body">
-                <table class="columns-table">
-                    <thead>
-                        <tr>
-                            <th>Columna</th>
-                            <th>Tipo SQL</th>
-                            <th>Modificador</th>
-                            <th>Descripción / Propósito</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${table.columns.map(c => `
+                <div class="table-responsive">
+                    <table class="columns-table">
+                        <thead>
                             <tr>
-                                <td><code>${c.name}</code></td>
-                                <td><span style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.8rem;">${c.type}</span></td>
-                                <td>
-                                    ${c.pk ? '<span class="col-pk">PRIMARY KEY</span>' : ''}
-                                    ${c.fk ? '<span class="col-fk">FOREIGN KEY</span>' : ''}
-                                    ${!c.pk && !c.fk ? '<span style="color: var(--text-muted);">NOT NULL / DEFAULT</span>' : ''}
-                                </td>
-                                <td>${c.desc}</td>
+                                <th>Columna</th>
+                                <th>Tipo SQL</th>
+                                <th>Modificador</th>
+                                <th>Descripción / Propósito</th>
                             </tr>
-                        `).join("")}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            ${table.columns.map(c => `
+                                <tr>
+                                    <td><code>${c.name}</code></td>
+                                    <td><span class="col-type-tag">${c.type}</span></td>
+                                    <td>
+                                        ${c.pk ? '<span class="col-pk">PRIMARY KEY</span>' : ''}
+                                        ${c.fk ? '<span class="col-fk">FOREIGN KEY</span>' : ''}
+                                        ${!c.pk && !c.fk ? '<span style="color: var(--text-muted);">NOT NULL / DEFAULT</span>' : ''}
+                                    </td>
+                                    <td>${c.desc}</td>
+                                </tr>
+                            `).join("")}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     `).join("");
@@ -522,8 +549,10 @@ function toggleAccordion(id) {
     const item = document.getElementById(id);
     if (!item) return;
     const body = item.querySelector(".table-acc-body");
+    const chevron = item.querySelector(".acc-chevron");
     if (body) {
-        body.classList.toggle("open");
+        const isOpen = body.classList.toggle("open");
+        if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     }
 }
 
@@ -551,11 +580,15 @@ function renderEndpoints(methodFilter, searchTerm) {
     container.innerHTML = filtered.map((ep, idx) => `
         <div class="endpoint-card" id="ep-card-${idx}">
             <div class="endpoint-header" onclick="toggleEndpointCard('ep-card-${idx}')">
-                <span class="http-method ${ep.method.toLowerCase()}">${ep.method}</span>
-                <span class="endpoint-path">${ep.path}</span>
-                <span class="endpoint-desc">${ep.desc}</span>
-                <span class="badge badge-primary" style="font-size: 0.65rem;">${ep.roles}</span>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">▼</span>
+                <div class="ep-header-main">
+                    <span class="http-method ${ep.method.toLowerCase()}">${ep.method}</span>
+                    <span class="endpoint-path">${ep.path}</span>
+                </div>
+                <div class="ep-header-meta">
+                    <span class="endpoint-desc">${ep.desc}</span>
+                    <span class="badge badge-primary ep-role-badge">${ep.roles}</span>
+                    <span class="ep-chevron">▼</span>
+                </div>
             </div>
             <div class="endpoint-body">
                 <div class="endpoint-meta-grid">
@@ -583,8 +616,10 @@ function toggleEndpointCard(id) {
     const card = document.getElementById(id);
     if (!card) return;
     const body = card.querySelector(".endpoint-body");
+    const chevron = card.querySelector(".ep-chevron");
     if (body) {
-        body.classList.toggle("open");
+        const isOpen = body.classList.toggle("open");
+        if (chevron) chevron.style.transform = isOpen ? "rotate(180deg)" : "rotate(0deg)";
     }
 }
 

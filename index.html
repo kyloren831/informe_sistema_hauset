@@ -10,13 +10,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Mobile Topbar -->
+    <header class="mobile-topbar">
+        <button id="btn-mobile-menu" class="mobile-menu-btn" aria-label="Abrir menú de navegación">
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+        </button>
+        <div class="mobile-brand">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">HAUSET <span class="badge-audit">AUDIT</span></span>
+        </div>
+        <div class="mobile-actions">
+            <button class="btn-icon mobile-print-btn" onclick="window.print()" title="Imprimir o exportar PDF" aria-label="Imprimir">🖨️</button>
+        </div>
+    </header>
+
+    <!-- Overlay backdrop for mobile drawer -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
     <div class="app-layout">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="brand">
-                <div class="brand-logo">
-                    <span class="logo-icon">⚡</span>
-                    <span class="logo-text">HAUSET <span class="badge-audit">AUDIT</span></span>
+                <div class="brand-top">
+                    <div class="brand-logo">
+                        <span class="logo-icon">⚡</span>
+                        <span class="logo-text">HAUSET <span class="badge-audit">AUDIT</span></span>
+                    </div>
+                    <button id="btn-close-sidebar" class="sidebar-close-btn" aria-label="Cerrar menú">&times;</button>
                 </div>
                 <p class="brand-subtitle">Auditoría Técnica y Avances</p>
             </div>
@@ -584,6 +606,9 @@
                             Matriz de verificación de privilegios aplicada tanto a nivel de controladores y métodos Spring Security (<code>@PreAuthorize</code>) como en la adaptación condicional de la UI en Flutter.
                         </p>
 
+                        <div class="mobile-table-hint">
+                            <span>👈 Desliza horizontalmente para ver todos los roles y permisos 👉</span>
+                        </div>
                         <div class="table-responsive">
                             <table class="rbac-matrix-table">
                                 <thead>
