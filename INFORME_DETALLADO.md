@@ -15,20 +15,20 @@ El sistema **Hauset** fue concebido para resolver la desconexión operativa y co
 Tras una inspección exhaustiva de los repositorios [`hauset`](file:///home/agent/proyectos/hauset) y [`hauset_mobile_client`](file:///home/agent/proyectos/hauset_mobile_client), el análisis de los esquemas de base de datos Flyway (V1 a V6), y la verificación en tiempo de ejecución de los contenedores Docker y endpoints activos, se emite el siguiente **Dictamen de Auditoría**:
 
 > [!IMPORTANT]
-> **Dictamen:** **APROBADO CON OBSERVACIONES OPERATIVAS (Índice de Madurez: 78/100)**  
-> La infraestructura base, el control de concurrencia optimista, el modelo de identificadores UUID descentralizados, el motor de archivos desacoplado (Opción B) y los módulos de Autenticación, Catálogo de Productos y Registro de Precios se encuentran en estado **100% operativo y funcional**. La fase inmediata prioritaria consiste en completar la interfaz de usuario en Flutter y exponer los controladores REST para los módulos de obra (Flyway V6).
+> **Dictamen:** **APROBADO CON OBSERVACIONES OPERATIVAS (Índice de Madurez: 70/100)**  
+> La infraestructura base, el control de concurrencia optimista, el modelo de identificadores UUID descentralizados, el motor de archivos desacoplado (Opción B) y los módulos de Autenticación, Catálogo de Productos y Registro de Precios se encuentran en estado **100% operativo y funcional**. La fase inmediata prioritaria consiste en avanzar con la interfaz de usuario en Flutter (actualmente en fase inicial de Auth/red) y exponer los controladores REST para los módulos de obra (Flyway V6).
 
 ### 1.1. Tabla de Madurez por Capa
 
 | Capa del Sistema | Estado | Cobertura / Avance | Observaciones de Auditoría |
 | :--- | :---: | :---: | :--- |
-| **Infraestructura & Contenedores** |  Operativo | 95% | Docker Compose con Spring Boot, Nginx (:80), PostgreSQL 15 (:5432) y MinIO (:9000). |
+| **Infraestructura & Contenedores** |  Operativo | 95% | Docker Compose con Spring Boot, Nginx (:80), PostgreSQL 15 (:5432) y volumen de Disco Duro en el Servidor. |
 | **Seguridad & Identidad** |  Operativo | 100% | JWT con claims (`id`, `nombre`, `rol`), Refresh Tokens UUID en BD, contraseñas BCrypt, endpoint `/me`. |
 | **Base de Datos & Migraciones** |  Operativo | 100% | 6 migraciones Flyway consolidadas sin drift. Índices en FKs, `TIMESTAMPTZ` y precisión `DECIMAL(12,2)`. |
 | **Módulo Catálogo & Proveedores** |  Operativo | 100% | CRUD proveedores, productos por categoría, historial de snapshots y cotización de menor a mayor. |
-| **Motor Multimedia (Opción B)** |  Operativo | 90% | `archivos_adjuntos` centralizada, hash SHA-256 idempotente, pruebas E2E en disco aprobadas. |
+| **Motor Multimedia (Opción B)** |  Operativo | 90% | `archivos_adjuntos` centralizada, almacenamiento en disco duro del servidor (`/var/hauset/storage`), hash SHA-256 e idempotencia. |
 | **Módulos de Obra / Campo (V6)** | ⚠️ En Modelado | 60% | 11 tablas y entidades JPA creadas; falta la capa de Controladores y Servicios REST. |
-| **Frontend Móvil (Flutter)** | 🔄 En Ejecución | 55% | Auth/Session validado en dispositivo físico (`moto g56 5G`); sprint de Catálogo y UI en curso. |
+| **Frontend Móvil (Flutter)** | 🔄 Fase Inicial | 20% | Arquitectura base, Auth/Session y red validados en hardware real; catálogo y módulos de campo en desarrollo. |
 
 ---
 
@@ -56,7 +56,7 @@ graph TD
 
     subgraph Storage["🗄️ Capa de Persistencia"]
         PG[("PostgreSQL 15<br/>Flyway V1 a V6<br/>UUIDs + Concurrencia Optimista")]
-        Disk[("MinIO / Disco Local<br/>/var/hauset/storage<br/>Evidencias, Firmas y Planos")]
+        Disk[("Disco Duro en Servidor<br/>/var/hauset/storage<br/>Evidencias, Firmas y Planos")]
     end
 
     A -->|"HTTP Cleartext / Tailscale<br/>100.66.85.43:80"| Nginx
@@ -75,7 +75,7 @@ graph TD
 
 * **ADR-01: Identificadores Universales UUID V4:** Permite a la app Flutter generar identificadores locales de visitas, checklist y fotos en zonas sin conectividad (offline), garantizando sincronización con PostgreSQL sin colisiones.
 * **ADR-02: Control de Concurrencia Optimista (`version` & HTTP 409):** Entidades susceptibles a edición concurrente (`cotizaciones`, `proyectos`, `checklist_tareas`, `visitas`) incorporan `@Version`. Si un instalador o la secretaría guardan sobre una versión desactualizada, el servidor emite un `409 Conflict`, capturado en Flutter mediante `ConflictFailure`.
-* **ADR-03: Arquitectura Multimedia Centralizada (Opción B):** Ninguna tabla de dominio contiene columnas de URLs o binarios. La tabla `archivos_adjuntos` vincula polimórficamente archivos (`entidad_tipo`, `entidad_id`, `categoria`) con hash SHA-256 para prevenir subidas repetidas por inestabilidad de red.
+* **ADR-03: Arquitectura Multimedia Centralizada (Opción B):** Ninguna tabla de dominio contiene columnas de URLs o binarios. La tabla `archivos_adjuntos` vincula polimórficamente archivos (`entidad_tipo`, `entidad_id`, `categoria`) con almacenamiento en el disco duro del servidor (`/var/hauset/storage`) y hash SHA-256 para prevenir subidas repetidas por inestabilidad de red.
 * **ADR-04: Desacoplamiento Comercial vs Operativo:** La cotización aprobada congela el precio comercial. Las instrucciones de trabajo en sitio son técnicas y versionadas (`instrucciones_version` 1..N). Los imprevistos en sitio que requieran material generan un `cotizacion_extras` (adenda) sin anular el contrato original.
 * **ADR-05: Catálogo Dinámico sin Precio Fijo de Proveedor:** Dada la constante fluctuación de precios de los distribuidores, el sistema almacena un historial cronológico de cotizaciones en `precios_historial`. La app móvil cotiza consultando los últimos precios ordenados de menor a mayor.
 * **ADR-06: Trazabilidad Estricta de Credenciales de Clientes:** Toda consulta a las contraseñas de cámaras o routers del cliente genera un registro inmutable en `credenciales_accesos_log`, permitiendo la visibilidad técnica en campo con control de auditoría.

@@ -91,9 +91,9 @@
                             <span class="score-title">Índice Global de Madurez</span>
                             <span class="badge badge-success">FASE OPERATIVA</span>
                         </div>
-                        <div class="score-value">78<span class="score-unit">/100</span></div>
+                        <div class="score-value">70<span class="score-unit">/100</span></div>
                         <div class="score-progress">
-                            <div class="progress-bar" style="width: 78%"></div>
+                            <div class="progress-bar" style="width: 70%"></div>
                         </div>
                         <p class="score-desc">Infraestructura, Auth, Catálogo, Multimedia y Esquema V1-V6 100% operativos.</p>
                     </div>
@@ -115,11 +115,11 @@
                             <span class="score-title">Avance Frontend Mobile</span>
                             <span class="badge badge-warning">FLUTTER 3</span>
                         </div>
-                        <div class="score-value">55<span class="score-unit">%</span></div>
+                        <div class="score-value">20<span class="score-unit">%</span></div>
                         <div class="score-progress">
-                            <div class="progress-bar orange" style="width: 55%"></div>
+                            <div class="progress-bar orange" style="width: 20%"></div>
                         </div>
-                        <p class="score-desc">Auth/Session E2E validado en dispositivo físico; Catálogo en fase de UI.</p>
+                        <p class="score-desc">Fase inicial: Auth, sesión JWT y conectividad validadas en hardware; módulos en desarrollo.</p>
                     </div>
 
                     <div class="score-card">
@@ -147,7 +147,7 @@
                             demuestra una base arquitectónica de alto estándar técnico. Se han resuelto con éxito los 
                             desafíos críticos de sincronización móvil offline mediante <strong>UUIDs universales</strong>, 
                             resolución de conflictos con <strong>concurrencia optimista (HTTP 409)</strong>, y desacoplamiento 
-                            de archivos binarios mediante una <strong>tabla multimedia centralizada (Opción B)</strong> con soporte S3/MinIO.
+                            de archivos binarios mediante una <strong>tabla multimedia centralizada (Opción B)</strong> con almacenamiento en disco duro del servidor.
                         </p>
 
                         <div class="kpi-banner">
@@ -219,7 +219,7 @@
                                     <div class="node-desc">Spring Data JPA • Spring Security 6 • JJWT 0.12.5 • Flyway Core<br>Modular: Auth, Catálogo, Proyectos, Multimedia, Auditoría</div>
                                 </div>
                             </div>
-                            <div class="arch-arrow">⬇ JDBC Connection Pool & Object Storage APIs ⬇</div>
+                            <div class="arch-arrow">⬇ Conexión JDBC & Almacenamiento en Disco ⬇</div>
                             <div class="arch-layer two-cols">
                                 <div class="arch-node db-node">
                                     <div class="node-icon">🗄️</div>
@@ -227,9 +227,9 @@
                                     <div class="node-desc">Esquema Relacional V1-V6<br>UUID Keys, Optimistic Lock Versioning<br>Soft-deletes & Indices FK</div>
                                 </div>
                                 <div class="arch-node storage-node">
-                                    <div class="node-icon">📦</div>
-                                    <div class="node-title">MinIO / AWS S3 Compatible</div>
-                                    <div class="node-desc">Almacenamiento Desacoplado de Fotos<br>Evidencias Antes/Después, Firmas, PDFs<br>Control SHA-256 e Idempotencia</div>
+                                    <div class="node-icon">💾</div>
+                                    <div class="node-title">Disco Duro en Servidor (/var/hauset/storage)</div>
+                                    <div class="node-desc">Almacenamiento en Disco Local Dedicado<br>Evidencias Antes/Después, Firmas, PDFs<br>Control SHA-256 e Idempotencia</div>
                                 </div>
                             </div>
                         </div>
@@ -742,10 +742,10 @@
                                     <span class="finding-id">H-04</span>
                                     <span class="severity-badge low">PRIORIDAD BAJA</span>
                                 </div>
-                                <h4>Transición de Disco Local a Driver S3/MinIO Nativo</h4>
-                                <p><strong>Descripción:</strong> El almacenamiento multimedia actual utiliza <code>DiskStorageService</code> montado en <code>/var/hauset/storage</code>. Aunque la interfaz <code>StorageService</code> está desacoplada y el contenedor MinIO está corriendo, el driver de subida por SDK S3 aún no está activo.</p>
-                                <p><strong>Riesgo:</strong> El disco local del VPS puede saturarse con fotos de alta resolución si no se rota a un bucket S3/R2 externo.</p>
-                                <p><strong>Recomendación:</strong> Activar el profile de <code>S3StorageService</code> utilizando el cliente oficial de AWS SDK / MinIO en el contenedor.</p>
+                                <h4>Gestión de Capacidad y Respaldo en Disco Duro del Servidor</h4>
+                                <p><strong>Descripción:</strong> El almacenamiento multimedia opera mediante <code>DiskStorageService</code> montado en el disco duro del servidor en la ruta <code>/var/hauset/storage</code>.</p>
+                                <p><strong>Riesgo:</strong> La acumulación continua de evidencias fotográficas de alta resolución en el disco duro del servidor puede comprometer el espacio si no se establecen cuotas o compresión.</p>
+                                <p><strong>Recomendación:</strong> Aplicar compresión automática a formato WebP al subir fotos desde el cliente o backend, e instrumentar un script automatizado de respaldos periódicos del disco duro.</p>
                             </div>
                         </div>
                     </div>

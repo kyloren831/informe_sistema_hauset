@@ -226,7 +226,7 @@ const DATABASE_DICTIONARY = [
             { name: "entidad_tipo", type: "VARCHAR(50)", pk: false, fk: false, desc: "INFORME_TECNICO, CHECKLIST_TAREA, FIRMA_CONFORMIDAD..." },
             { name: "entidad_id", type: "UUID", pk: false, fk: false, desc: "UUID de la entidad asociada" },
             { name: "categoria", type: "VARCHAR(50)", pk: false, fk: false, desc: "EVIDENCIA_ANTES, EVIDENCIA_DESPUES, FIRMA_CLIENTE..." },
-            { name: "storage_key", type: "VARCHAR(500)", pk: false, fk: false, desc: "Ruta de almacenamiento relativa en S3 / Disco" },
+            { name: "storage_key", type: "VARCHAR(500)", pk: false, fk: false, desc: "Ruta de almacenamiento relativa en disco duro del servidor" },
             { name: "checksum_sha256", type: "VARCHAR(64)", pk: false, fk: false, desc: "Hash SHA-256 para idempotencia móvil" },
             { name: "mime_type", type: "VARCHAR(100)", pk: false, fk: false, desc: "image/webp, image/jpeg, application/pdf" },
             { name: "tamano_bytes", type: "BIGINT", pk: false, fk: false, desc: "Tamaño físico en bytes" },
@@ -677,11 +677,11 @@ function exportAuditJson() {
             proyecto: "Hauset — Sistema de Gestión de Campo para Domótica",
             fechaAuditoria: "2026-09-16",
             auditor: "Antigravity Software Quality Audit",
-            estadoGlobal: "Fase Operativa — Calificación 78/100"
+            estadoGlobal: "Fase de Desarrollo — Calificación 70/100"
         },
         metricas: {
             backendAvancePct: 85,
-            frontendAvancePct: 55,
+            frontendAvancePct: 20,
             databaseMigracionesPct: 100,
             tablasModeladas: DATABASE_DICTIONARY.length,
             endpointsOperativos: ENDPOINTS_CATALOG.length
@@ -689,7 +689,7 @@ function exportAuditJson() {
         decisionesArquitectura: [
             "ADR-01: Identificadores UUID V4 descentralizados para soporte Offline",
             "ADR-02: Control de Concurrencia Optimista (columna version con HTTP 409 Conflict)",
-            "ADR-03: Arquitectura Multimedia Centralizada (Opción B) con SHA-256 e idempotencia",
+            "ADR-03: Arquitectura Multimedia Centralizada (Opción B) con almacenamiento en disco duro del servidor y hash SHA-256",
             "ADR-04: Desacoplamiento de Cotización Comercial vs Instrucciones de Trabajo",
             "ADR-05: Catálogo Dinámico sin Precio Fijo con Historial de Snapshots",
             "ADR-06: Cifrado y Auditoría de Lectura de Credenciales de Dispositivos"
@@ -700,7 +700,7 @@ function exportAuditJson() {
             "H-01 (Alta): Implementar servicio de cifrado simétrico AES-256 para contrasena_cifrada en JPA",
             "H-02 (Media): Desarrollar controladores y servicios REST para módulos de campo V6 (Proyectos, Visitas, Checklist)",
             "H-03 (Media): Habilitar sqflite en Flutter y configurar sincronización diferida offline",
-            "H-04 (Baja): Activar perfil S3StorageService con MinIO/R2 en lugar de disco local"
+            "H-04 (Baja): Implementar monitoreo de almacenamiento en disco duro del servidor y compresión WebP"
         ]
     };
 
